@@ -51,20 +51,19 @@ void
 Display::createWindow( int width, int height ) {
     m_Window = glfwCreateWindow( width, height, "Door",nullptr, nullptr );
     glfwMakeContextCurrent( m_Window );
-    Display * display;
-    glfwSetWindowUserPointer( m_Window, display );
+    glfwSetWindowUserPointer( m_Window, this );
 
-    auto keyFunc = []( GLFWwindow* window, int key, int scancode, int action, int mode){
-        auto hakuna = static_cast< Display * >( glfwGetWindowUserPointer( window ) );
-        hakuna->keyInput( window, key, scancode, action,mode );
-    };
     auto mouseFunc = []( GLFWwindow* window, double posX, double posY ){
         auto matata = static_cast< Display* >( glfwGetWindowUserPointer( window ) );
         matata->mouseInput( window, posX, posY );
     };
+    auto keyFunc = []( GLFWwindow* window, int key, int scancode, int action, int mode){
+        auto hakuna = static_cast< Display * >( glfwGetWindowUserPointer( window ) );
+        hakuna->keyInput( window, key, scancode, action,mode );
+    };
     glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetKeyCallback( m_Window, keyFunc );
     glfwSetCursorPosCallback( m_Window, mouseFunc );
+    glfwSetKeyCallback( m_Window, keyFunc );
 }
 void
 Display::mouseInput( GLFWwindow* window, double posX, double posY ){

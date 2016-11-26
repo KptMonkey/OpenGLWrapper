@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
 
     Shader shader;
 
-    shader.bindShader( "VertexShader.vert" );
-    shader.bindShader( "FragmentShader.frag" );
+    shader.bindShader( "shader/VertexShader.vert" );
+    shader.bindShader( "shader/FragmentShader.frag" );
 
     std::vector<GLfloat> vertices1 = {
         -0.5f, -0.5f, 0.0f, // Left
