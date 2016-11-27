@@ -6,9 +6,10 @@
 #include <memory>
 enum class PrimitiveType { Points, TiangleStrip, Triangles };
 enum class StateType { Depth, Stencil, Blend, Culling };
+enum class DepthFunction { Always, Never, Less, Equal, LessEqual, Greater, NotEqual, GreaterEqual };
 class RenderContext {
 public:
-    RenderContext(){}
+    RenderContext() {}
     ~RenderContext(){}
 
     void
@@ -20,7 +21,14 @@ public:
     createDisplay( int x, int y );
 
     void
-    enableState( StateType s );
+    enableDepthTest();
+
+    void
+    writeToDepthBuffer();
+    void
+    readOnlyDepthBuffer();
+    void
+    setDepthFunction( DepthFunction d );
 
     void
     disableState( StateType s );

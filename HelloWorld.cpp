@@ -13,89 +13,78 @@ int main(int argc, char *argv[])
     RenderContext rctx;
 
     Display * Display = rctx.createDisplay( 800, 600 );
-    glewInit();
-    glewExperimental = GL_TRUE;
+//    glewInit();
+//    glewExperimental = GL_TRUE;
 
     Shader shader;
 
     shader.bindShader( "shader/VertexShader.vert" );
     shader.bindShader( "shader/FragmentShader.frag" );
 
-    std::vector<GLfloat> vertices1 = {
-        -0.5f, -0.5f, 0.0f, // Left
-         0.5f, -0.5f, 0.0f, // Right
-         0.0f,  0.5f, 0.0f  // Top
+
+    std::vector<GLfloat> cube =  {
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+               0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+               0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+               0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+              -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+              -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+              -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+               0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+               0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+               0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+              -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+              -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+              -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+              -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+              -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+              -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+              -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+              -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+               0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+               0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+               0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+               0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+               0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+               0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+              -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+               0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+               0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+               0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+              -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+              -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+              -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+               0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+               0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+               0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+              -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+              -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
 
-    std::vector<GLfloat> cube = {
-                -0.5f, -0.5f, -0.5f,
-                 0.5f, -0.5f, -0.5f,
-                 0.5f,  0.5f, -0.5f,
-                 0.5f,  0.5f, -0.5f,
-                -0.5f,  0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f,
-
-                -0.5f, -0.5f,  0.5f,
-                 0.5f, -0.5f,  0.5f,
-                 0.5f,  0.5f,  0.5f,
-                 0.5f,  0.5f,  0.5f,
-                -0.5f,  0.5f,  0.5f,
-                -0.5f, -0.5f,  0.5f,
-
-                -0.5f,  0.5f,  0.5f,
-                -0.5f,  0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f,
-                -0.5f, -0.5f,  0.5f,
-                -0.5f,  0.5f,  0.5f,
-
-                 0.5f,  0.5f,  0.5f,
-                 0.5f,  0.5f, -0.5f,
-                 0.5f, -0.5f, -0.5f,
-                 0.5f, -0.5f, -0.5f,
-                 0.5f, -0.5f,  0.5f,
-                 0.5f,  0.5f,  0.5f,
-
-                -0.5f, -0.5f, -0.5f,
-                 0.5f, -0.5f, -0.5f,
-                 0.5f, -0.5f,  0.5f,
-                 0.5f, -0.5f,  0.5f,
-                -0.5f, -0.5f,  0.5f,
-                -0.5f, -0.5f, -0.5f,
-
-                -0.5f,  0.5f, -0.5f,
-                 0.5f,  0.5f, -0.5f,
-                 0.5f,  0.5f,  0.5f,
-                 0.5f,  0.5f,  0.5f,
-                -0.5f,  0.5f,  0.5f,
-                -0.5f,  0.5f, -0.5f
-    };
-    std::vector<float> strip = {
-        0.0f, 1.0f, 0.0f
-        ,0.0f, 0.0f, 0.0f
-        ,1.0f, 1.0f, 0.0f
-        ,1.0f, 0.0f, 0.0f
-        ,1.0f, 1.0f, 1.0f
-        ,1.0f, 0.0f, 1.0f
-
-    };
     VertexArray triangle;
-    triangle.createVertexArrayObject( cube );
-    triangle.describeVertex( 0, 3, GlTypes::Float, GlBool::True );
+    triangle.createVertexArray( cube );
+    triangle.describeVertexArray( 0, 3, GlTypes::Float, 5, GlBool::True, 0 );
+    triangle.describeVertexArray( 1, 2, GlTypes::Float, 5, GlBool::True, 3 );
     glm::mat4 projection = glm::perspective( 45.0f, 0.75f, 0.01f, 100.0f );
     glm::mat4 model;
-
-    rctx.enableState( StateType::Depth );
+    shader.activate();
+    Texture texture("texture.png",shader.m_Program );
+    shader.setVariable( "model", model );
+    shader.setVariable( "projection", projection);
+    texture.activate(0,"lambda");
+    rctx.enableDepthTest();
     //    Game loop
     while (!Display->windowClosed()) {
-        triangle.bind();
-        shader.setVariable( "model", model );
-        shader.setVariable( "projection", projection);
-        shader.activate();
         rctx.clearColor( 0.1f, 0.4f, 0.2f, 1.0f );
         rctx.clearColorBuffer();
         rctx.clearDepthBuffer();
-        rctx.draw( triangle, shader, PrimitiveType::TiangleStrip );
+        triangle.bindVertexArray();
+        rctx.draw( triangle, shader, PrimitiveType::Triangles );
         Display->updateDisplay();
     }
     // Properly de-allocate all resources once they've outlived their purpose

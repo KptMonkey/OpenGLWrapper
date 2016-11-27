@@ -16,25 +16,45 @@ map_to_gl( PrimitiveType p) {
 int
 map_to_gl( StateType s) {
     const int lut[] = {
-            GL_DEPTH, GL_STENCIL, GL_BLEND, GL_CULL_FACE };
+            GL_DEPTH_TEST, GL_STENCIL, GL_BLEND, GL_CULL_FACE };
     return lut[ static_cast<int>( s )];
+}
+int map_to_gl ( DepthFunction d ) {
+    const int lut[] = {
+        GL_ALWAYS, GL_NEVER, GL_LESS, GL_EQUAL, GL_LEQUAL,
+        GL_GREATER, GL_NOTEQUAL, GL_GEQUAL
+    };
+    return lut[ static_cast<int>( d )];
 }
 
 Display*
 RenderContext::createDisplay( int x, int y )
 {   m_Display = new Display() ;
     m_Display->createWindow( x, y );
+    glewInit();
+    glewExperimental = GL_TRUE;
     return m_Display;
 }
 void
-RenderContext::enableState( StateType s ) {
-    glEnable( map_to_gl( s ) );
+RenderContext::enableDepthTest() {
+    glEnable( GL_DEPTH_TEST );
+}
+void
+RenderContext::writeToDepthBuffer() {
+    glDepthMask( GL_TRUE );
+    glDepthFunc( GL_ALWAYS );
 }
 
 void
-RenderContext::disableState( StateType s ) {
-    glDisable( map_to_gl( s ) );
+RenderContext::readOnlyDepthBuffer() {
+    glDepthMask( GL_FALSE );
 }
+
+void
+RenderContext::setDepthFunction( DepthFunction d ) {
+    glDepthFunc ( map_to_gl( d  ) );
+}
+
 void
 RenderContext::clearColor( float r, float g, float b, float a ) {
     glClearColor( r, g, b, a );

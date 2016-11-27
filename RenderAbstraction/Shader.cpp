@@ -31,28 +31,28 @@ Shader::bindShader( std::string path ) {
 
     auto shaderString = readShader( path );
     const GLchar * shaderSource = shaderString.c_str();
-    auto shaderType = path.substr( (path.size() - 4),path.size() );
+    auto shaderType = path.substr( ( path.size() - 4 ),path.size() );
 
     GLuint shader;
-    if ( shaderType == "frag") shader = glCreateShader( GL_FRAGMENT_SHADER );
-    if ( shaderType == "vert") shader = glCreateShader( GL_VERTEX_SHADER );
-    if ( shaderType == "geom") shader = glCreateShader( GL_GEOMETRY_SHADER );
+    if ( shaderType == "frag" ) shader = glCreateShader( GL_FRAGMENT_SHADER );
+    if ( shaderType == "vert" ) shader = glCreateShader( GL_VERTEX_SHADER );
+    if ( shaderType == "geom" ) shader = glCreateShader( GL_GEOMETRY_SHADER );
 
     glShaderSource( shader, 1, &shaderSource, nullptr );
     glCompileShader( shader );
     GLint success;
     GLchar infoLog[512];
-    glGetShaderiv( shader, GL_COMPILE_STATUS, &success);
+    glGetShaderiv( shader, GL_COMPILE_STATUS, &success );
     if (!success) {
-        glGetShaderInfoLog( shader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        glGetShaderInfoLog( shader, 512, NULL, infoLog );
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << "\n";
     }
 
-    glAttachShader( m_Program, shader);
+    glAttachShader( m_Program, shader );
     glLinkProgram( m_Program );
-    glGetProgramiv( m_Program, GL_LINK_STATUS, &success);
+    glGetProgramiv( m_Program, GL_LINK_STATUS, &success );
     if (!success) {
-        glGetProgramInfoLog( m_Program, 512, NULL, infoLog);
+        glGetProgramInfoLog( m_Program, 512, NULL, infoLog );
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
     glDeleteShader( shader );

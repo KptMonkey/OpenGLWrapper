@@ -30,6 +30,8 @@ add_definitions(
 # End magic
 
 file(COPY  ${CMAKE_SOURCE_DIR}/shader DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY  ${CMAKE_SOURCE_DIR}/texture.png DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 add_executable(hello ${PROJECT_SOURCE_DIR}/HelloWorld.cpp
                 glfw/Display
                 RenderAbstraction/Shader

@@ -8,15 +8,15 @@ public:
     VertexArray(){}
     ~VertexArray(){}
     void
-    createVertexArrayObject(const std::vector<float> &vertices );
+    createVertexArray( const std::vector<float> &vertices );
     GLuint
     getVertexArray();
     int
     getSizeOfArray(){ return m_NoV; }
     void
-    describeVertex( int start, int number, GlTypes t, GlBool normalized );
+    describeVertexArray( int shaderPos, int number, GlTypes t, int nov, GlBool normalized, int stride );
     void
-    bind();
+    bindVertexArray();
 
 private:
     GLuint m_VBO;
