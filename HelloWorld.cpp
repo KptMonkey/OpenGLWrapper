@@ -4,7 +4,7 @@
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include "CMultiLayeredHeightmap.hpp"
+#include "HeightMap.hpp"
 
 
 #include "RenderAbstraction.hpp"
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     Shader debug;
     debug.bindShader("shader/DebugDepth.vert");
     debug.bindShader("shader/DebugDepth.frag");
-    CMultiLayeredHeightmap hM;
+    HeightMap hM;
     hM.LoadHeightMapFromImage("heightmap.r16");
     std::vector<float> quad = {
          // Positions        // Texture Coords
