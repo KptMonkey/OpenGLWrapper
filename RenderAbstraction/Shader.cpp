@@ -45,7 +45,8 @@ Shader::bindShader( std::string path ) {
     glGetShaderiv( shader, GL_COMPILE_STATUS, &success );
     if (!success) {
         glGetShaderInfoLog( shader, 512, NULL, infoLog );
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << "\n";
+        std::cout << path << "\n";
+        std::cout << "ERROR::SHADER::" + shaderType +" ::COMPILATION_FAILED\n" << infoLog << "\n";
     }
 
     glAttachShader( m_Program, shader );
@@ -53,22 +54,42 @@ Shader::bindShader( std::string path ) {
     glGetProgramiv( m_Program, GL_LINK_STATUS, &success );
     if (!success) {
         glGetProgramInfoLog( m_Program, 512, NULL, infoLog );
+        std::cout << path << "\n";
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
     glDeleteShader( shader );
 }
 
-void
-Shader::setVariable( std::string name, glm::mat4 matrix ) {
-    GLuint modelLoc = glGetUniformLocation( m_Program, name.c_str() );
-    glUniformMatrix4fv( modelLoc, 1, GL_FALSE, glm::value_ptr( matrix ) );
-}
-void
-Shader::setTexture( std::string name, int number ) {
-    glUniform1i( glGetUniformLocation( m_Program, name.c_str() ), number );
-}
 
 void
 Shader::activate() {
     glUseProgram( m_Program );
+}
+
+
+Shader
+Shader::operator[]( std::string const & name ) {
+    m_Location = glGetUniformLocation( m_Program, name.c_str() );
+    return *this;
+}
+
+//TODO Combine this stuff into one operator
+void
+Shader::operator=( glm::mat4 const & mat ){
+    glUniformMatrix4fv( m_Location, 1, GL_FALSE, glm::value_ptr( mat ) );
+}
+
+void
+Shader::operator=( glm::vec4 const & vec ){
+    glUniform4fv( m_Location, 1, glm::value_ptr( vec ) );
+}
+
+void
+Shader::operator=( glm::vec3 const & vec ){
+    glUniform3fv( m_Location, 1, glm::value_ptr( vec ) );
+}
+
+void
+Shader::operator=( int const & num ){
+    glUniform1i( m_Location, num );
 }

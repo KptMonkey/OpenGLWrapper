@@ -10,6 +10,7 @@
 #define HelloWorld_hpp
 #include <stdio.h>
 #include <iostream>
+#include <glm/glm.hpp>
 
 class HelloWorld {
 private:
@@ -17,10 +18,11 @@ public:
     HelloWorld(){}
     ~HelloWorld(){}
 
-    int main();
-protected:
+    int main(int argc, char *argv[]);
+private:
 
 };
 
 
 #endif /* HelloWorld_hpp */
+

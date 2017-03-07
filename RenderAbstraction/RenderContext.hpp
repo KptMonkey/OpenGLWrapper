@@ -2,23 +2,22 @@
 #include "VertexArray.hpp"
 #include "Shader.hpp"
 #include <glm/glm.hpp>
-#include "glfw/Display.hpp"
 #include <memory>
+#include <SDL2/SDL.h>
+
 enum class PrimitiveType { Points, TiangleStrip, Triangles };
 enum class StateType { Depth, Stencil, Blend, Culling };
 enum class DepthFunction { Always, Never, Less, Equal, LessEqual, Greater, NotEqual, GreaterEqual };
 class RenderContext {
 public:
-    RenderContext() {}
+    RenderContext();
     ~RenderContext(){}
 
     void
     draw( VertexArray &VertexArray,
-          Shader const & shader ,
           PrimitiveType p );
-
-    Display*
-    createDisplay( int x, int y );
+    void
+    drawIndex( Shader const & shader, int size);
 
     void
     enableDepthTest();
@@ -43,6 +42,11 @@ public:
 
     VertexArray
     createVertexArray();
+
+    void
+    swapBuffers();
+
 private:
-    Display* m_Display;
+    SDL_Window * m_Window;
+
 };

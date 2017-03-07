@@ -3,7 +3,28 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
+#include <GL/glew.h>
 
+
+RenderContext::RenderContext() {
+
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+    m_Window = SDL_CreateWindow("penis",
+            0, 0,
+            800, 600,
+            SDL_WINDOW_OPENGL /*| SDL_WINDOW_RESIZABLE*/);
+
+    SDL_GL_SetSwapInterval(1); // v-sync
+    auto gl_context = SDL_GL_CreateContext(m_Window);
+
+    glewExperimental = true;
+    glewInit();
+}
 
 int
 map_to_gl( PrimitiveType p) {
@@ -27,14 +48,6 @@ int map_to_gl ( DepthFunction d ) {
     return lut[ static_cast<int>( d )];
 }
 
-Display*
-RenderContext::createDisplay( int x, int y )
-{   m_Display = new Display() ;
-    m_Display->createWindow( x, y );
-    glewInit();
-    glewExperimental = GL_TRUE;
-    return m_Display;
-}
 void
 RenderContext::enableDepthTest() {
     glEnable( GL_DEPTH_TEST );
@@ -42,7 +55,7 @@ RenderContext::enableDepthTest() {
 void
 RenderContext::writeToDepthBuffer() {
     glDepthMask( GL_TRUE );
-    glDepthFunc( GL_ALWAYS );
+    glDepthFunc( GL_LESS );
 }
 
 void
@@ -70,17 +83,19 @@ RenderContext::clearDepthBuffer() {
 
 void
 RenderContext::draw( VertexArray & VertexArray,
-                     const Shader & shader,
                      PrimitiveType p) {
-
-    glm::mat4 view;
-    // ToDo
-    view = glm::lookAt( m_Display->camPos, m_Display->camPos + m_Display->Direction, m_Display->Up  );
-    GLuint viewLoc = glGetUniformLocation( shader.m_Program, "view");
-    glUniformMatrix4fv( viewLoc, 1, GL_FALSE, glm::value_ptr( view ) );
-
     glDrawArrays( map_to_gl( p ), 0, VertexArray.getSizeOfArray() );
     glBindVertexArray( 0 );
 
 }
+void
+RenderContext::drawIndex(const Shader &shader, int size) {
+    glDrawElements(GL_TRIANGLE_STRIP, size, GL_UNSIGNED_INT, 0);
+    glBindVertexArray( 0 );
 
+}
+
+void
+RenderContext::swapBuffers() {
+    SDL_GL_SwapWindow(m_Window);
+}

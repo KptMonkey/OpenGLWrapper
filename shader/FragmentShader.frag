@@ -1,9 +1,10 @@
 #version 330 core
 out vec4 color;
-in  vec2 texPos;
-uniform sampler2D lambda;
+in vec3 pos;
+in vec2 TexPos;
+uniform sampler2D terrain;
 void main()
 {
-  color = texture(lambda,texPos);
+  color = vec4(vec3(texture(terrain,TexPos)),1.0);
 
 }

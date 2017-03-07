@@ -1,15 +1,20 @@
 #pragma once
-#include <external/soil/inc/SOIL/SOIL.h>
 #include <string>
 #include <GL/glew.h>
 
 class Texture {
 public:
-    Texture(std::string path, GLuint & program );
+    Texture(){}
+    Texture( std::string path );
     ~Texture(){}
     void
-    activate( int textureUnit, std::string variableName );
+    activate( int textureUnit );
+    void
+    load();
+
+    GLuint
+    createDepthMap(int width, int height);
 private:
     GLuint m_Texture;
-    GLuint & m_Program;
+    std::string m_Path;
 };
