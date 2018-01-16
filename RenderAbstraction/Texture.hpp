@@ -5,16 +5,19 @@
 class Texture {
 public:
     Texture(){}
-    Texture( std::string path );
     ~Texture(){}
     void
-    activate( int textureUnit );
+    activate(int textureUnit);
     void
-    load();
+    load2DTexture(std::string path);
+    void
+    load2DTextureAlpha(std::string path);
 
+    void
+    createDepthTexture(int width, int height);
     GLuint
-    createDepthMap(int width, int height);
+    getTexture();
+
 private:
     GLuint m_Texture;
-    std::string m_Path;
 };

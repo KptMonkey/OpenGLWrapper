@@ -6,5 +6,6 @@
 #include "Shader.hpp"
 #include "Texture.hpp"
 #include "VertexArray.hpp"
+#include "FrameBuffer.hpp"
 
 #endif

@@ -10,11 +10,10 @@ map_to_gl( int textureUnit ) {
     return lut[ textureUnit ];
 }
 
-Texture::Texture( std::string path ) : m_Path( path ) {}
-
+//There is no possibility to set the tex paramter
 void
-Texture::load() {
-    auto image = IMG_Load(m_Path.c_str());
+Texture::load2DTexture(std::string path) {
+    auto image = IMG_Load(path.c_str());
     glGenTextures(1, &m_Texture);
     glBindTexture(GL_TEXTURE_2D, m_Texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -27,22 +26,37 @@ Texture::load() {
 }
 
 void
-Texture::activate( int textureUnit ) {
-    glActiveTexture( map_to_gl( textureUnit ) );
-    glBindTexture( GL_TEXTURE_2D, m_Texture );
+Texture::load2DTextureAlpha(std::string path) {
+    auto image = IMG_Load(path.c_str());
+    glGenTextures(1, &m_Texture);
+    glBindTexture(GL_TEXTURE_2D, m_Texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-GLuint
-Texture::createDepthMap(int width, int height) {
+void
+Texture::activate(int textureUnit) {
+    glActiveTexture(map_to_gl( textureUnit));
+    glBindTexture(GL_TEXTURE_2D, m_Texture);
+}
+void
+Texture::createDepthTexture(int width, int height) {
 
-    GLuint depthMap;
-    glGenTextures(1, &depthMap);
-    glBindTexture(GL_TEXTURE_2D, depthMap);
+    glGenTextures(1, &m_Texture);
+    glBindTexture(GL_TEXTURE_2D, m_Texture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+}
 
-    return depthMap;
+GLuint
+Texture::getTexture() {
+    return m_Texture;
 }

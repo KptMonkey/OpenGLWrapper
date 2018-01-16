@@ -93,3 +93,8 @@ void
 Shader::operator=( int const & num ){
     glUniform1i( m_Location, num );
 }
+
+void
+Shader::operator=( float const & num ){
+    glUniform1f( m_Location, num );
+}

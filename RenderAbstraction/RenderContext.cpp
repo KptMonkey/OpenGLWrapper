@@ -9,10 +9,12 @@
 
 RenderContext::RenderContext() {
 
+
     SDL_Init(SDL_INIT_VIDEO);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,16);
 
     m_Window = SDL_CreateWindow("penis",
             0, 0,
@@ -24,6 +26,10 @@ RenderContext::RenderContext() {
 
     glewExperimental = true;
     glewInit();
+
+    m_Quad.createVertexArray(quad);
+    m_Quad.describeVertexArray(0,2,GlTypes::Float, 4, GlBool::False, 0);
+    m_Quad.describeVertexArray(1,2,GlTypes::Float, 4, GlBool::False, 2);
 }
 
 int
@@ -52,6 +58,7 @@ void
 RenderContext::enableDepthTest() {
     glEnable( GL_DEPTH_TEST );
 }
+
 void
 RenderContext::writeToDepthBuffer() {
     glDepthMask( GL_TRUE );
@@ -60,7 +67,7 @@ RenderContext::writeToDepthBuffer() {
 
 void
 RenderContext::readOnlyDepthBuffer() {
-    glDepthMask( GL_FALSE );
+    glDepthMask( GL_FALSE ); //wrong
 }
 
 void
@@ -89,10 +96,20 @@ RenderContext::draw( VertexArray & VertexArray,
 
 }
 void
-RenderContext::drawIndex(const Shader &shader, int size) {
-    glDrawElements(GL_TRIANGLE_STRIP, size, GL_UNSIGNED_INT, 0);
+RenderContext::drawIndex(PrimitiveType p, int size) {
+    glDrawElements(map_to_gl( p ), size, GL_UNSIGNED_INT, 0);
     glBindVertexArray( 0 );
 
+}
+
+void
+RenderContext::drawDepthMap(Shader & shader, Texture & texture) {
+    glViewport(0,0,800,600);
+    shader.activate();
+    texture.activate(0);
+    clearDepthBuffer();
+    m_Quad.bindVertexArray();
+    draw(m_Quad,PrimitiveType::Triangles);
 }
 
 void

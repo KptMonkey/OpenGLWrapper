@@ -12,6 +12,7 @@ struct Vertex {
 struct VertexT{
     glm::vec3 Position;
     glm::vec2 TexPosition;
+    glm::vec3 Normal;
 };
 
 enum class GlTypes { Float };
@@ -22,6 +23,8 @@ public:
     ~VertexArray(){}
     void
     createVertexArray(const std::vector<float> &vertices );
+    void
+    createVertexArray(const std::vector<glm::vec3> &vertices );
     void
     createVertexArray(const std::vector<Vertex> &vertices );
     void

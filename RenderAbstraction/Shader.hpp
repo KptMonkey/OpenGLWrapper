@@ -35,6 +35,9 @@ public:
     void
     operator= ( int const & num );
 
+    void
+    operator= ( float const & num );
+
     GLuint m_Program;
 private:
     GLuint m_Location;

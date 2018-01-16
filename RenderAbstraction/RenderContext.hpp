@@ -1,9 +1,11 @@
 #pragma once
 #include "VertexArray.hpp"
 #include "Shader.hpp"
+#include "Texture.hpp"
 #include <glm/glm.hpp>
 #include <memory>
 #include <SDL2/SDL.h>
+
 
 enum class PrimitiveType { Points, TiangleStrip, Triangles };
 enum class StateType { Depth, Stencil, Blend, Culling };
@@ -13,11 +15,6 @@ public:
     RenderContext();
     ~RenderContext(){}
 
-    void
-    draw( VertexArray &VertexArray,
-          PrimitiveType p );
-    void
-    drawIndex( Shader const & shader, int size);
 
     void
     enableDepthTest();
@@ -42,11 +39,31 @@ public:
 
     VertexArray
     createVertexArray();
+// Different render functions
+    void
+    draw( VertexArray &VertexArray,
+          PrimitiveType p );
+    void
+    drawIndex(PrimitiveType p, int size);
+
+    void
+    drawDepthMap(Shader & shader, Texture &texture);
 
     void
     swapBuffers();
 
 private:
     SDL_Window * m_Window;
+    // Kinda ugly, should be removed
+    VertexArray m_Quad;
+    std::vector<float> quad = {
+       -1.0f,  1.0f,  0.0f, 1.0f,
+       -1.0f, -1.0f,  0.0f, 0.0f,
+        1.0f, -1.0f,  1.0f, 0.0f,
+
+       -1.0f,  1.0f,  0.0f, 1.0f,
+        1.0f, -1.0f,  1.0f, 0.0f,
+        1.0f,  1.0f,  1.0f, 1.0f
+     };
 
 };

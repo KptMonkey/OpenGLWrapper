@@ -25,6 +25,19 @@ VertexArray::createVertexArray(std::vector<float> const &vertices) {
     glBindVertexArray(0);
     m_NoV = vertices.size();
 }
+
+void
+VertexArray::createVertexArray(std::vector<glm::vec3> const &vertices) {
+    glGenVertexArrays(1, &m_VAO);
+    glGenBuffers(1, &m_VBO);
+    glBindVertexArray(m_VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof( glm::vec3 ), &vertices[ 0 ], GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+    m_NoV = vertices.size();
+}
+
 void
 VertexArray::createVertexArray( const std::vector<Vertex> &vertices ) {
     glGenVertexArrays( 1, &m_VAO );
