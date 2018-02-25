@@ -7,63 +7,57 @@
 #include <SDL2/SDL.h>
 
 
-enum class PrimitiveType { Points, TiangleStrip, Triangles };
+enum class PrimitiveType { Point, TriangleStrip, Triangle };
 enum class StateType { Depth, Stencil, Blend, Culling };
 enum class DepthFunction { Always, Never, Less, Equal, LessEqual, Greater, NotEqual, GreaterEqual };
+
 class RenderContext {
 public:
-    RenderContext();
-    ~RenderContext(){}
+   RenderContext();
+   ~RenderContext(){}
 
 
-    void
-    enableDepthTest();
+   void
+   enableDepthTest();
 
-    void
-    writeToDepthBuffer();
-    void
-    readOnlyDepthBuffer();
-    void
-    setDepthFunction( DepthFunction d );
+   void
+   disableDepthTest();
 
-    void
-    disableState( StateType s );
+   void
+   writeToDepthBuffer(DepthFunction d);
+   void
+   readOnlyDepthBuffer();
+   void
+   setDepthFunction(DepthFunction d);
 
-    void
-    clearColor ( float r, float g, float b, float a );
+   void
+   disableState(StateType s);
 
-    void
-    clearColorBuffer();
-    void
-    clearDepthBuffer();
+   void
+   clearColor (float r, float g, float b, float a);
 
-    VertexArray
-    createVertexArray();
-// Different render functions
-    void
-    draw( VertexArray &VertexArray,
-          PrimitiveType p );
-    void
-    drawIndex(PrimitiveType p, int size);
+   void
+   clearColorBuffer();
+   void
+   clearDepthBuffer();
 
-    void
-    drawDepthMap(Shader & shader, Texture &texture);
+   VertexArray
+   createVertexArray();
 
-    void
-    swapBuffers();
+   void
+   draw(VertexArray & VertexArray, PrimitiveType p);
+
+   void
+   drawIndex(PrimitiveType p, int size);
+
+   void
+   drawDepthMap(Shader & shader, Texture &texture);
+
+   void
+   swapBuffers();
 
 private:
-    SDL_Window * m_Window;
-    // Kinda ugly, should be removed
-    VertexArray m_Quad;
-    std::vector<float> quad = {
-       -1.0f,  1.0f,  0.0f, 1.0f,
-       -1.0f, -1.0f,  0.0f, 0.0f,
-        1.0f, -1.0f,  1.0f, 0.0f,
+   SDL_Window * m_Window;
 
-       -1.0f,  1.0f,  0.0f, 1.0f,
-        1.0f, -1.0f,  1.0f, 0.0f,
-        1.0f,  1.0f,  1.0f, 1.0f
-     };
-
+   VertexArray m_Quad;
 };
